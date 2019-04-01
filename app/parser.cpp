@@ -6,7 +6,7 @@ parser::parser()
     col_count = 0;
 }
 
-parser::parser(QString filename)
+parser::parser(const QString &filename)
 {
     setFile(filename);
 }
@@ -30,13 +30,16 @@ QStringList parser::get_data(QString header)
 {
     int index = headers.indexOf(header);
     QStringList arr;
-    for (int i = 0; i < data.size(); ++i){
-        arr << data[i][index];
+    if(index != -1){
+        for (int i = 0; i < data.size(); ++i){
+            arr << data[i][index];
+        }
     }
+    if(arr.isEmpty()) arr << QString("");
     return arr;
 }
 
-void parser::setFile(QString filename)
+void parser::setFile(const QString &filename)
 {
     count = get_rows(filename);
     col_count = get_cols(filename);
@@ -66,7 +69,7 @@ void parser::setFile(QString filename)
     }
 }
 
-int parser::get_rows(const QString filename)
+int parser::get_rows(const QString &filename)
 {
     int i = 0;
 
@@ -85,7 +88,7 @@ int parser::get_rows(const QString filename)
     }
 }
 
-int parser::get_cols(const QString filename)
+int parser::get_cols(const QString &filename)
 {
     QFile inputFile(filename);
     if (inputFile.open(QIODevice::ReadOnly))

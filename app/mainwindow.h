@@ -3,8 +3,9 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include <QTextStream>
+#include <QElapsedTimer>
 #include "parser.h"
+#include "parser2.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,7 +33,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     parser *file1 = new (parser);
-    parser *file2 = new (parser);
+    parser2 *file2 = new (parser2);
     bool is_first_ready = false;
     bool is_second_ready = false;
 };

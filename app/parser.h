@@ -14,13 +14,13 @@ private:
     int count;          //count of lines
     int col_count;      //count of columns
 
-    int get_rows(const QString filename);
-    int get_cols(const QString filename);
+    int get_rows(const QString &filename);
+    int get_cols(const QString &filename);
 
 public:
     parser();                               //constructor
-    parser(const QString filename);         //constructor with file init
-    void setFile(const QString filename);   //setter
+    parser(const QString &filename);         //constructor with file init
+    void setFile(const QString &filename);   //setter
     QStringList get_data(QString header);        //getter, returns array of data by header
     QStringList get_headers();                  //getter, returns array of header names
     int get_quantity_data();                 //getter, returns 'int count' value
@@ -28,3 +28,4 @@ public:
 };
 
 #endif // PARSER_H
+

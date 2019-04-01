@@ -8,12 +8,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     parser.cpp \
-    about.cpp
+    about.cpp \
+    parser2.cpp
 
 HEADERS += \
     mainwindow.h \
     parser.h \
-    about.h
+    about.h \
+    parser2.h
 
 FORMS += \
         mainwindow.ui \

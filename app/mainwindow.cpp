@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "about.h"
-#include "parser.h"
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -132,6 +131,9 @@ void MainWindow::on_submit_clicked()
     QStringList h1 = file1->get_headers();
     QStringList h2 = file2->get_headers();
 
+    //Hash init
+    file2->genHash();
+
     ui->statusBar->showMessage("Generating file...");
     ui->progressBar->setValue(0);
 
@@ -145,6 +147,8 @@ void MainWindow::on_submit_clicked()
             tr("Save CSV file"), "output.csv",
             tr("Comma-separated values file (*.csv);;All Files (*)"));
 
+    QElapsedTimer timer;
+    timer.start();
     QFile file(fileName);
     if ( file.open(QIODevice::WriteOnly | QIODevice::Truncate) )
     {
@@ -159,7 +163,6 @@ void MainWindow::on_submit_clicked()
 
         //make new data (by string)
         QStringList data1 = file1->get_data("#CSG");
-        QStringList data2 = file2->get_data("#CSG");
         QStringList xS = file1->get_data("#X");
         QStringList yS = file1->get_data("#Y");
         QStringList zS = file1->get_data("#Z");
@@ -169,18 +172,20 @@ void MainWindow::on_submit_clicked()
 
         for(int i = 0; i < file1->get_quantity_data(); i++)
         {
-            for(int j = 0; j < file2->get_quantity_data(); j++)
-            {
-                if(data1[i] == data2[j] && data1[i] != "" && data2[i] != ""){
-                    out << data1[i] << "," << xS[i] << "," << yS[i] << "," << zS[i] << "," << fromS[j] << "," << toS[j] << "," << srvS[j] << endl;
-                }
+            int index2File = file2->hashedCSG.value(data1[i]);
+            if(index2File != 0){
+                int j = index2File - 1;
+                out << data1[i] << "," << xS[i] << "," << yS[i] << "," << zS[i] << "," << fromS[j] << "," << toS[j] << "," << srvS[j] << endl;
             }
+
             float calc = i*100/(file1->get_quantity_data());
             ui->progressBar->setValue(static_cast<int>(calc));
         }
 
+
+
     }
     file.close();
-    ui->statusBar->showMessage("Complete!");
+    ui->statusBar->showMessage(QString("Completed in %1 ms!").arg(timer.elapsed()));
     ui->progressBar->setValue(100);
 }
